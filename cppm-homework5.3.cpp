@@ -1,5 +1,5 @@
 ﻿#include <iostream>
-#include <cmath>
+#include <vector>
 #include <string>
 #include <Windows.h>
 
@@ -22,6 +22,7 @@ public:
     {
         return true;
     }
+    virtual ~Figure() {}
 };
 
 // Базовый класс Triangle
@@ -37,7 +38,6 @@ public:
 
     void print_info() const override 
     {
-        Figure::print_info();
         std::cout << "Треугольник:\n";
         std::cout << "Правильная: " << (check() ? "Да" : "Нет") << "\n";
         std::cout << "Количество сторон: 3\n";
@@ -47,7 +47,7 @@ public:
 
     bool check() const override 
     {
-        return (A + B + C == 180) && Figure::check();
+        return (A + B + C == 180) && (Figure::check());
     }
 };
 
@@ -60,8 +60,8 @@ public:
 
     void print_info() const override 
     {
-        Triangle::print_info();
-        std::cout << "Прямоугольный треугольник:\n";
+     std::cout << "Прямоугольный треугольник:\n";
+     Triangle::print_info();
     }
 
     bool check() const override 
@@ -98,7 +98,6 @@ public:
 
     void print_info() const override 
     {
-        Triangle::print_info();
         std::cout << "Равносторонний треугольник:\n";
     }
 
@@ -221,45 +220,28 @@ int main()
     SetConsoleOutputCP(1251);
     setlocale(LC_ALL, "Russian");
 
-    Figure figure;
+    Figure* figure[] =
+    {
+        new Figure(),
+        new Triangle(10.0, 20.0, 30.0, 50.0, 60.0, 70.0),
+        new RightTriangle(10.0, 20.0),
+        new IsoscelesTriangle(10.0, 20.0),
+        new EquilateralTriangle(30.0),
+        new Quadrilateral(10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0),\
+        new RectangleOld(10.0, 20.0),
+        new Square(20.0),
+        new Parallelogram(20.0, 30.0, 30.0, 40.0),
+        new Rhombus(30.0)
+    };
 
-    Triangle triangle(10.0, 20.0, 30.0, 50.0, 60.0, 70.0);
-
-    RightTriangle right_triangle(10.0, 20.0);
-
-    IsoscelesTriangle isosceles_triangle(10.0, 20.0);
-
-    EquilateralTriangle equilateral_triangle(30.0);
-
-    Quadrilateral quadrilateral(10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0);
-
-    RectangleOld rectangle(10.0, 20.0);
-
-    Square square(20.0);
-
-    Parallelogram parallelogram(20.0, 30.0, 30.0, 40.0);
-
-    Rhombus rhombus(30.0);
-
-    print_figure_info(&figure);
-
-    print_figure_info(&triangle);
-
-    print_figure_info(&right_triangle);
-
-    print_figure_info(&isosceles_triangle);
-
-    print_figure_info(&equilateral_triangle);
-
-    print_figure_info(&quadrilateral);
-
-    print_figure_info(&rectangle);
-
-    print_figure_info(&square);
-
-    print_figure_info(&parallelogram);
-
-    print_figure_info(&rhombus);
-
+    for (Figure* figure : figure)
+    {
+        figure->print_info();
+        std::cout << "\n";
+    }
+    for (Figure* figure : figure)
+    {
+        delete figure;
+    }
     return 0;
 }
